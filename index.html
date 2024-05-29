@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		.duck{
+			height: 200px;
+			width: 200px;
+			background-image: url("duck.png");
+			background-size: 100% 100%;
+			border-radius: 20px;
+			position: absolute;
+			transition: 5s;
+		}
+
+		.button {
+			height: 40px;
+			width: 100px;
+			position: absolute;
+			left: 800px;
+			border-radius: 10px;
+		}
+	</style>
+</head>
+<body style="background-image: url('bg.jpg'); background-size: 100%;">
+	<div class="main">
+		
+	</div>
+	<div class="s" style="display: none; color: white;">
+		<h1>Очки <span class="score">0</span> из 30</h1>
+		<h1>У тебя есть <span class="time">25</span> секунд</h1>
+	</div>
+
+	<button class="button">Spawn</button>
+
+	<script type="text/javascript">
+		let main = document.querySelector(".main")
+		let btn = document.querySelector(".button")
+		let d = document.querySelectorAll(".duck")
+		let score = document.querySelector(".score")
+		let s = document.querySelector(".s")
+		let t = document.querySelector(".time")
+		let myInterval
+		let mmo
+		let time = 25
+		let up = [100, 300, 500]
+		let o = 0
+		let timestop
+
+		function spawnDuck(){
+			let duck = document.createElement("div")
+
+			main.appendChild(duck)
+			duck.style.left = -200 + "px"
+			duck.style.top = up[getRandom(2)] + "px"
+			duck.classList.add("duck")
+
+
+
+			function move() {
+				duck.style.left = 1800 + "px"
+			}
+
+			mmo = setInterval(move, 2000)
+ 
+
+			function poof() {
+				duck.style.display = "none"
+			}
+
+			let clear = setInterval(poof,5000)
+ 
+
+			duck.onclick = function() {
+				duck.style.display = "none"
+				o = o + 1
+				score.innerHTML = o
+				if(o == 30) {
+					alert("Молодец. Ты выйграл.")
+					clearTimeout(timestop)
+					clearInterval(myInterval)
+					clearInterval(createDucks)
+					duck.style.display = "none"
+				}
+			}
+
+
+
+		}
+
+		
+		btn.onclick = function() {
+			createDucks = setInterval(spawnDuck, 600)
+			btn.style.display = "none"
+			s.style.display = "block"
+			myInterval = setInterval(timer, 1000)
+			timestop = setTimeout(stop, 25000)
+			
+		}
+
+		function getRandom(arg) {
+			let number = Math.round(Math.random() * arg)
+			return number
+		}
+
+		function timer() {
+			time = time - 1
+			t.innerHTML = time
+		}
+
+		function stop() {
+			clearInterval(myInterval)
+			clearInterval(createDucks)
+			alert("Ха-ха! Ты проиграл.")
+			document.querySelector(".main").style.display = "none"
+		}
+
+		
+		
+		
+	</script>
+</body>
+</html>
